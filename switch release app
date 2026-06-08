@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Switch Upcoming Releases</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e4000f;
+    --dark: #1a1a2e;
+    --darker: #0f0f1a;
+    --card-bg: #16213e;
+    --text: #e8e8f0;
+    --muted: #888aa0;
+    --border: rgba(255,255,255,0.08);
+    --soon: #ff6b35;
+    --confirmed: #00c896;
+    --rumored: #a78bfa;
+    --tba: #888aa0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--darker);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.07) 2px,
+      rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .header {
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    line-height: 1.8;
+    letter-spacing: -0.5px;
+  }
+
+  .logo .red { color: var(--red); }
+  .logo .sub { font-size: 7px; color: var(--muted); display: block; margin-top: 2px; }
+
+  .header-right { display: flex; align-items: center; gap: 12px; }
+
+  .live-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--confirmed);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .pulse-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--confirmed);
+    animation: blink 1.4s infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .filter-btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .filter-btn:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+  .filter-btn.active[data-f="all"]       { background: var(--red);       border-color: var(--red);       color: #fff; }
+  .filter-btn.active[data-f="soon"]      { background: var(--soon);      border-color: var(--soon);      color: #fff; }
+  .filter-btn.active[data-f="confirmed"] { background: var(--confirmed); border-color: var(--confirmed); color: #0f0f1a; }
+  .filter-btn.active[data-f="rumored"]   { background: var(--rumored);   border-color: var(--rumored);   color: #fff; }
+  .filter-btn.active[data-f="tba"]       { background: var(--muted);     border-color: var(--muted);     color: #fff; }
+
+  .refresh-btn {
+    font-family: 'Press Start 2P', monospace;
